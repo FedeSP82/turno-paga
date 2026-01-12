@@ -1,14 +1,15 @@
-
 from pydantic import BaseModel
 from typing import Optional
 
+class Trasferta(BaseModel):
+    forfettario: bool = False
+    pranzo: bool = False
+    benzina: float = 0.0
+    autostrada: float = 0.0
+
 class Giorno(BaseModel):
     data: str
-    turno_previsto: str
-    turno_effettivo: Optional[str]
-    note: Optional[str] = ""
-    trasferta_96: bool = False
-    trasferta_66: bool = False
-    assenza: bool = False
-    carburante: float = 0.0
-    autostrada: float = 0.0
+    pt: Optional[str] = None
+    eff: Optional[str] = None
+    trasferimento: bool = False
+    trasferta: Trasferta = Trasferta()
