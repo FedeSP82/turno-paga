@@ -1,0 +1,2 @@
+
+ORE_MENSILI = 168.6
