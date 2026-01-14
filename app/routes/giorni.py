@@ -1,23 +1,21 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
-from app.storage import GIORNI
+from app.services.giorni_store import giorni_salvati
 
-router = APIRouter(prefix="/giorni", tags=["giorni"])
+router = APIRouter(
+    prefix="/giorni",
+    tags=["giorni"]
+)
 
-
-class Trasferta(BaseModel):
-    forfettario: bool
-    pranzo: bool
-    benzina: float
-    autostrada: float
-
-
-class Giorno(BaseModel):
-    data: str          # "YYYY-MM-DD" o "DD/MM/YYYY"
-    pt: str
-    eff: str | None
-    trasferimento: bool
-    trasferta: Trasferta
+@router.post("/")
+def salva_giorno(giorno: dict):
+    """
+    Salva una giornata lavorativa (mock, in memoria).
+    """
+    giorni_salvati.append(giorno)
+    return {
+        "ok": True,
+        "giorno": giorno
+    }
 
 
 @router.post("/")
