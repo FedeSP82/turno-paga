@@ -1,20 +1,17 @@
 from fastapi import APIRouter
-from app.storage import GIORNI
+from app.services.giorni_store import giorni_salvati
 
 router = APIRouter(prefix="/mesi", tags=["mesi"])
 
-
 @router.get("/{anno}/{mese}")
 def get_mese(anno: int, mese: int):
-    giorni_mese = []
-
-    for data, giorno in GIORNI.items():
-        # accetta sia DD/MM/YYYY che YYYY-MM-DD
-        if str(anno) in data and f"/{mese:02d}/" in data or f"-{mese:02d}-" in data:
-            giorni_mese.append(giorno)
+    giorni_mese = [
+        g for g in giorni_salvati
+        if g["data"].endswith(f"/{mese:02d}/{anno}")
+    ]
 
     return {
         "anno": anno,
         "mese": mese,
-        "giorni": sorted(giorni_mese, key=lambda g: g["data"])
+        "giorni": giorni_mese
     }
